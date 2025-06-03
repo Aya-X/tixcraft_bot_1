@@ -1948,6 +1948,69 @@ def tixcraft_toast(driver, message):
     except Exception as exc:
         print("find toast element fail")
 
+# def tixcraft_keyin_captcha_code(driver, answer = "", auto_submit = False):
+#     is_verifyCode_editing = False
+#     is_form_sumbited = False
+
+#     # manually keyin verify code.
+#     # start to input verify code.
+#     form_verifyCode = None
+#     try:
+#         form_verifyCode = driver.find_element(By.CSS_SELECTOR, '#TicketForm_verifyCode')
+#     except Exception as exc:
+#         print("find form_verifyCode fail")
+
+#     if not form_verifyCode is None:
+#         is_visible = False
+#         try:
+#             if form_verifyCode.is_enabled():
+#                 is_visible = True
+#         except Exception as exc:
+#             pass
+
+#         inputed_value = None
+#         try:
+#             inputed_value = form_verifyCode.get_attribute('value')
+#         except Exception as exc:
+#             print("find verify code fail")
+#             pass
+
+#         if inputed_value is None:
+#             inputed_value = ""
+#             is_visible = False
+
+#         if is_visible:
+#             try:
+#                 form_verifyCode.click()
+#                 is_verifyCode_editing = True
+#             except Exception as exc:
+#                 print("click form_verifyCode fail, trying to use javascript.")
+#                 # plan B
+#                 try:
+#                     driver.execute_script("document.getElementById(\"TicketForm_verifyCode\").focus();")
+#                     is_verifyCode_editing = True
+#                 except Exception as exc:
+#                     #print("click form_verifyCode fail.")
+#                     pass
+
+#             if len(answer) > 0:
+#                 #print("start to fill answer.")
+#                 try:
+#                     form_verifyCode.clear()
+#                     form_verifyCode.send_keys(answer)
+
+#                     if auto_submit:
+#                         form_verifyCode.send_keys(Keys.ENTER)
+#                         is_verifyCode_editing = False
+#                         is_form_sumbited = True
+#                     else:
+#                         driver.execute_script("document.getElementById(\"TicketForm_verifyCode\").select();")
+#                         tixcraft_toast(driver, "※ 按 Enter 如果答案是: " + answer)
+#                 except Exception as exc:
+#                     print("send_keys ocr answer fail.")
+
+#     return is_verifyCode_editing, is_form_sumbited
+
 def tixcraft_keyin_captcha_code(driver, answer = "", auto_submit = False):
     is_verifyCode_editing = False
     is_form_sumbited = False
@@ -1990,19 +2053,20 @@ def tixcraft_keyin_captcha_code(driver, answer = "", auto_submit = False):
                     driver.execute_script("document.getElementById(\"TicketForm_verifyCode\").focus();")
                     is_verifyCode_editing = True
                 except Exception as exc:
-                    #print("click form_verifyCode fail.")
                     pass
 
             if len(answer) > 0:
-                #print("start to fill answer.")
                 try:
                     form_verifyCode.clear()
                     form_verifyCode.send_keys(answer)
 
                     if auto_submit:
-                        form_verifyCode.send_keys(Keys.ENTER)
-                        is_verifyCode_editing = False
-                        is_form_sumbited = True
+                        # Check and click agreement checkbox before submitting
+                        is_finish_checkbox_click = check_checkbox(driver, By.CSS_SELECTOR, '#TicketForm_agree')
+                        if is_finish_checkbox_click:
+                            form_verifyCode.send_keys(Keys.ENTER)
+                            is_verifyCode_editing = False
+                            is_form_sumbited = True
                     else:
                         driver.execute_script("document.getElementById(\"TicketForm_verifyCode\").select();")
                         tixcraft_toast(driver, "※ 按 Enter 如果答案是: " + answer)
