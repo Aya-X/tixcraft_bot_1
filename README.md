@@ -65,23 +65,34 @@ https://max-everyday.com/2023/11/buy-ticket-by-vm/
 
 ### Step 2: 進入 clone 的資料夾: tixcraft_bot:
 
-<code>cd tixcraft_bot </code>
+
+```bash
+cd tixcraft_bot 
+```
 
 ### Step 3: 安裝第三方套件:
 
-<code>python3 -m pip install -r pip-req.txt</code>
+```bash
+python3 -m pip install -r pip-req.txt
+```
 
 ### Step 4: 執行設定介面主桯式:
 
-<code>python3 settings.py</code>
+```bash
+python3 settings.py
+```
 
 如果不使用設定介面，直接執行主程式:
 
-<code>python3 chrome_tixcraft.py</code>
+```bash
+python3 chrome_tixcraft.py
+```
 
 如果不使用設定介面，直接執行主程式並套用特定的設定檔:
 
-<code>python3 chrome_tixcraft.py --input settings.json</code>
+```bash
+python3 chrome_tixcraft.py --input settings.json
+```
 
 如果遇到MaxBot 改版, 請重新操作上面4個步驟一次, 即可取得新的版本.
 
